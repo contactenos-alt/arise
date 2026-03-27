@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#070b14" />
+    <meta name="description" content="ARISE SYSTEM - Real-life RPG productivity and growth interface" />
+    <link rel="manifest" href="manifest.json" />
+    <link rel="icon" href="assets/icon-192.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="assets/icon-512.svg" />
+    <title>ARISE SYSTEM</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="top-bar glass">
+        <div>
+          <p class="label">SYSTEM INTERFACE</p>
+          <h1>ARISE SYSTEM</h1>
+        </div>
+        <button id="installBtn" class="btn ghost hidden">Install</button>
+      </header>
+
+      <main id="app" class="grid-layout">
+        <section class="panel glass" id="profilePanel">
+          <h2>Player Profile</h2>
+          <div class="profile-row">
+            <div class="avatar" aria-label="Avatar placeholder">⚔️</div>
+            <div class="profile-meta">
+              <label for="playerName" class="label">Hunter Name</label>
+              <input id="playerName" maxlength="28" />
+              <p id="rankBadge" class="rank-badge"></p>
+            </div>
+          </div>
+          <div class="xp-wrap">
+            <div class="xp-head">
+              <span id="levelText">LV 1</span>
+              <span id="xpText">0 / 100 XP</span>
+            </div>
+            <div class="xp-track">
+              <div id="xpBar" class="xp-bar"></div>
+            </div>
+          </div>
+          <div id="streakText" class="streak"></div>
+        </section>
+
+        <section class="panel glass" id="dashboardPanel">
+          <h2>Dashboard</h2>
+          <div class="dashboard-grid">
+            <article>
+              <p class="label">Daily Progress</p>
+              <p id="dailyProgress">0%</p>
+            </article>
+            <article>
+              <p class="label">Active Missions</p>
+              <p id="activeMissions">0</p>
+            </article>
+            <article>
+              <p class="label">Completed Today</p>
+              <p id="completedToday">0</p>
+            </article>
+            <article>
+              <p class="label">Total XP</p>
+              <p id="totalXp">0</p>
+            </article>
+          </div>
+          <canvas id="statsChart" width="320" height="170" aria-label="Stats growth chart"></canvas>
+        </section>
+
+        <section class="panel glass" id="missionsPanel">
+          <div class="row-between">
+            <h2>Daily Missions</h2>
+            <button id="regenerateBtn" class="btn ghost">Regenerate Daily</button>
+          </div>
+          <form id="taskForm" class="task-form">
+            <input id="taskInput" placeholder="Add custom mission..." required />
+            <input id="taskXpInput" type="number" min="5" max="500" value="50" required />
+            <button class="btn" type="submit">Add</button>
+          </form>
+          <ul id="missionList" class="mission-list"></ul>
+        </section>
+
+        <section class="panel glass" id="statsPanel">
+          <h2>Stats</h2>
+          <ul id="statsList" class="stats-list"></ul>
+          <h3>Shadow Habits</h3>
+          <ul id="shadowList" class="shadow-list"></ul>
+        </section>
+
+        <section class="panel glass" id="achievementsPanel">
+          <h2>Achievements</h2>
+          <ul id="achievementList" class="achievement-list"></ul>
+        </section>
+
+        <section class="panel glass" id="timerPanel">
+          <h2>Mission Timer</h2>
+          <div id="timerDisplay" class="timer-display">25:00</div>
+          <div class="timer-controls">
+            <input id="timerMinutes" type="number" min="1" max="180" value="25" />
+            <button class="btn" id="timerStart">Start</button>
+            <button class="btn ghost" id="timerPause">Pause</button>
+            <button class="btn ghost" id="timerReset">Reset</button>
+          </div>
+        </section>
+
+        <section class="panel glass" id="systemPanel">
+          <h2>System Voice</h2>
+          <div id="systemFeed" class="system-feed"></div>
+        </section>
+      </main>
+    </div>
+
+    <template id="missionTemplate">
+      <li class="mission-item">
+        <label class="mission-label">
+          <input type="checkbox" class="mission-toggle" />
+          <span class="mission-title"></span>
+        </label>
+        <div class="mission-actions">
+          <span class="xp-pill"></span>
+          <button class="btn ghost small edit">Edit</button>
+          <button class="btn ghost small delete">Delete</button>
+        </div>
+      </li>
+    </template>
+
+    <script type="module" src="app.js"></script>
+  </body>
+</html>
