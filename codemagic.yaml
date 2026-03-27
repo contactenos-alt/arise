@@ -26,3 +26,57 @@ workflows:
     artifacts:
       - build/arise-system-pwa.zip
       - arise-system/**
+
+  arise_system_android_debug:
+    name: ARISE SYSTEM Android Debug APK
+    max_build_duration: 90
+    instance_type: linux_x2
+    environment:
+      node: 20.11.1
+      java: 17
+      vars:
+        APP_DIR: arise-system
+        CAP_APP_ID: com.arisesystem.app
+        CAP_APP_NAME: ARISE SYSTEM
+    cache:
+      cache_paths:
+        - $HOME/.npm
+        - $HOME/.gradle/caches
+        - $HOME/.gradle/wrapper
+    scripts:
+      - name: Validate source before Android build
+        script: |
+          node --check "$APP_DIR/app.js"
+          node --check "$APP_DIR/modules/ui/render.js"
+          node --check "$APP_DIR/modules/core/missions.js"
+          jq . "$APP_DIR/manifest.json" >/dev/null
+
+      - name: Prepare Capacitor wrapper project
+        script: |
+          rm -rf android-build
+          mkdir -p android-build/www
+          cp -R "$APP_DIR"/* android-build/www/
+          cd android-build
+          npm init -y
+          npm install @capacitor/core @capacitor/cli @capacitor/android
+          cat > capacitor.config.json <<CONFIG
+          {
+            "appId": "${CAP_APP_ID}",
+            "appName": "${CAP_APP_NAME}",
+            "webDir": "www",
+            "bundledWebRuntime": false
+          }
+          CONFIG
+          npx cap add android
+          npx cap copy android
+
+      - name: Build debug APK
+        script: |
+          cd android-build/android
+          ./gradlew assembleDebug
+          cd ..
+          cp android/app/build/outputs/apk/debug/app-debug.apk arise-system-debug.apk
+
+    artifacts:
+      - android-build/arise-system-debug.apk
+      - android-build/android/app/build/outputs/**/*.apk
