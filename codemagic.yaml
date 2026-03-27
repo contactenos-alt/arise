@@ -10,9 +10,9 @@ workflows:
       - name: Validate JavaScript modules
         script: |
           node --version
-          node --check "$APP_DIR/app.js"
-          node --check "$APP_DIR/modules/ui/render.js"
-          node --check "$APP_DIR/modules/core/missions.js"
+          node --experimental-default-type=module --check "$APP_DIR/app.js"
+          node --experimental-default-type=module --check "$APP_DIR/modules/ui/render.js"
+          node --experimental-default-type=module --check "$APP_DIR/modules/core/missions.js"
       - name: Validate manifest
         script: |
           jq . "$APP_DIR/manifest.json" >/dev/null
@@ -46,9 +46,9 @@ workflows:
     scripts:
       - name: Validate source before Android build
         script: |
-          node --check "$APP_DIR/app.js"
-          node --check "$APP_DIR/modules/ui/render.js"
-          node --check "$APP_DIR/modules/core/missions.js"
+          node --experimental-default-type=module --check "$APP_DIR/app.js"
+          node --experimental-default-type=module --check "$APP_DIR/modules/ui/render.js"
+          node --experimental-default-type=module --check "$APP_DIR/modules/core/missions.js"
           jq . "$APP_DIR/manifest.json" >/dev/null
 
       - name: Prepare Capacitor wrapper project
